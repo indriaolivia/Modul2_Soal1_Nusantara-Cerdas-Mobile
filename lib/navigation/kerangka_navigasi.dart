@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../pages/beranda_page.dart';
 import '../pages/layanan_page.dart';
 import '../pages/warga_page.dart';
+import 'ikon_warga_badge.dart';
 import 'app_routes.dart';
 
 class KerangkaNavigasi extends StatefulWidget {
@@ -57,8 +58,8 @@ class _KerangkaNavigasiState extends State<KerangkaNavigasi> {
                             label: Text('Layanan'),
                           ),
                           NavigationRailDestination(
-                            icon: Icon(Icons.person_outline),
-                            selectedIcon: Icon(Icons.person),
+                            icon: IkonWargaBadge(),
+                            selectedIcon: IkonWargaBadge(terpilih: true),   
                             label: Text('Warga'),
                           ),
                         ],
@@ -88,8 +89,8 @@ class _KerangkaNavigasiState extends State<KerangkaNavigasi> {
                         label: 'Layanan',
                       ),
                       NavigationDestination(
-                        icon: Icon(Icons.person_outline),
-                        selectedIcon: Icon(Icons.person),
+                        icon: IkonWargaBadge(),
+                        selectedIcon: IkonWargaBadge(terpilih: true),
                         label: 'Warga',
                       ),
                     ],

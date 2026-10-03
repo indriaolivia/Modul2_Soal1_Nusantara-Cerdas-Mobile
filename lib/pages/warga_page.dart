@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../data/data_layanan.dart';
+import '../models/favorit_model.dart';
 import '../navigation/app_routes.dart';
 
 class WargaPage extends StatelessWidget {
@@ -6,6 +9,9 @@ class WargaPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Gabungkan layanan dari semua tab bidang menjadi satu daftar.
+    final semuaLayanan = dataLayanan.values.expand((l) => l).toList();
+
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
@@ -13,9 +19,44 @@ class WargaPage extends StatelessWidget {
           child: ListTile(
             leading: CircleAvatar(child: Icon(Icons.person)),
             title: Text('Indria Olivia'),
-            subtitle: Text('NIK: 3201•••••••0001\nKelurahan Cerdas, Kota Nusantara'),
+            subtitle:
+                Text('NIK: 3201•••••••0001\nKelurahan Cerdas, Kota Nusantara'),
             isThreeLine: true,
           ),
+        ),
+        const SizedBox(height: 16),
+        Text('Layanan Favorit',
+            style: Theme.of(context).textTheme.titleMedium),
+        Consumer<FavoritModel>(
+          builder: (context, model, _) {
+            final favorit = semuaLayanan
+                .where((l) => model.apakahFavorit(l.nama))
+                .toList();
+
+            if (favorit.isEmpty) {
+              return const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                child: Text('Belum ada layanan favorit. '
+                    'Tandai dengan ikon bintang di tujuan Layanan.'),
+              );
+            }
+
+            return Column(
+              children: [
+                for (final l in favorit)
+                  ListTile(
+                    leading: Icon(l.ikon),
+                    title: Text(l.nama),
+                    subtitle: Text(l.dinas),
+                    trailing: IconButton(
+                      tooltip: 'Hapus dari favorit',
+                      icon: const Icon(Icons.star, color: Colors.amber),
+                      onPressed: () => model.batalTandai(l.nama),
+                    ),
+                  ),
+              ],
+            );
+          },
         ),
         const SizedBox(height: 16),
         Text('Laporan Terakhir',
